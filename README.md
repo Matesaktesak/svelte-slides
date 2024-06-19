@@ -1,87 +1,45 @@
-# Reveal.js + Svelte + Vite + TailwindCSS
+# Reveal.js + Svelte
 
-![Svelte Slides logo](public/svelte-slides.jpg)
-
-This template should help get you started creating awesome slide decks using [Reveal.js](https://revealjs.com) with Svelte in Vite.
-You can also use [TailwindCSS](https://tailwindcss.com) utility classes to style your slide contents.
+A Svelte wrapper for basig [Reveal.js](https://revealjs.com) components.
 
 ## How does it work?
 - Your slides are both Svelte components and Reveal.js slides.
-- You can have one or more slides (using `<section/>`) within a single Svelte component.
-- Create new slides as Svelte components under `src/slides`
-- Just import and include your components inside the `src/Presentation.svelte` component
+- You can have one or more slides (using `<Slide/>`) within a single Svelte component.
+- Just import and include your Slides inside the `<Presentation />` component
 - That's it, you are good to go.
 
 ## Configuring Reveal.js
-You can customize the `Reveal.js` setup in `src/config.js`.
-
-
-## Sample slide
-### src/Title.svelte
-You can insert code blocks using template literals inside `<pre>` and `<code>` elements.
-```html
-<section>
-<h1>This is a sample slide</h1>
-<ul>
-<li>Apples</li>
-<li>Oranges</li>
-<li>Grapes</li>
-</ul>
-
-<h2>Sample code</h2>
-
-    <pre>
-    <code data-line-numbers data-trim data-no-escape>
-    {`
-      const name = "hello world";
-      if(name === 'hello') {
-        console.log('world');
-      }
-    `}
-    </code>
-    </pre>
-</section>
-```
-
-### src/Presentation.svelte
-The slide order is the order in which you layout your Svelte components.
-
-```html
-<script>
-    import Title          from './slides/Title.svelte';
-    import Love           from './slides/Love.svelte';
-    import GettingStarted from './slides/GettingStarted.svelte';
-
-    const partner = ['Svelte', 'Reveal.js'];
+You can customize the `Reveal.js` setup by setting properties on `<Presentation />`. Eg:
+```svelte
+<script lang="ts">
+  import Highlight from 'reveal.js/plugin/highlight/highlight';
 </script>
 
-<Title/>
-<Love {partner}/>
-<GettingStarted/>
-
+<Presentation autoAnimate hash={false} plugins={[Highlight]}>
+  <!-- Your slides here -->
+</Presentation>
 ```
 
 ## Built-in Components
 ### Slide
-A component for slide with all the options supported 
-```html
-<Slide bgColor="red">
-<h1>This is a sample slide</h1>
-<ul>
-<li>Apples</li>
-<li>Oranges</li>
-<li>Grapes</li>
-</ul>
+A component for slide with some options supported and some basic events.
+
+The `on:show` event is fired when the slide becomes visible, `on:hide` when another slide is opened. `on:transitionEnd` is also available.
+```svelte
+<Slide bgColor="red" on:show={doSomething}>
+  <h1>This is a sample slide</h1>
+  <ul>
+    <li>Apples</li>
+    <li class="fragment">Oranges</li>
+    <li>Grapes</li>
+  </ul>
 </Slide>
 ```
-
-Please refer to [src/lib/Slide.svelte](src/lib/Slide.svelte) for more information about the props.
-
 
 ### Code
 A component to render code blocks
 ```html
-<Code trim={true} lineNumbers="1|2-4" >
+<Code trim lineNumbers="1|2-4" >
     {`
       const name = "hello world";
       if(name === 'hello') {
@@ -91,26 +49,42 @@ A component to render code blocks
 </Code>
 ```
 
-Please refer to [/src/lib/Code.svelte](/src/lib/Code.svelte) for more information about the props.
+### Markdown
+The markdown component is the fastest way to create lots of simple slides:
+
+```svelte
+<Markdown>
+{'
+  # Slide 1
+  
+  ---
+  
+  # Slide 2
+  With some text
+  
+  ---
+
+  # Slide 3
+'}
+</Markdown>
+```
 
 ### Notes
 A component for speaker notes
-```html
+```svelte
 <Notes>
-Hello Everyone, I am using svelte-slides for this presentation
+  Hello Everyone, I am using svelte-slides for this presentation
 </Notes>
 ```
 
 ### Youtube
 A component embedding YouTube videos
+```svelte
+<Youtube url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"/>
 ```
-<Youtube url="https://www.youtube.com/watch?v=1lcPGnRL4Qo"/>
-```
-
-Please refer to [/src/lib/Youtube.svelte](/src/lib/Youtube.svelte) for more information about the props.
 
 ## Inspiration
-This project is inspired by [svelte-reveal-boilerplate](https://github.com/micschwarz/svelte-reveal-boilerplate/) 
+This project is inspired by [svelte-reveal-boilerplate](https://github.com/micschwarz/svelte-reveal-boilerplate/) and is a fork of [svelte-slides project template](https://github.com/rajasegar/svelte-slides)
 
 ## Recommended IDE Setup
 
